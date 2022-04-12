@@ -33,8 +33,8 @@ jobs:
           cd ./target
           unzip lambda-0.0.1-SNAPSHOT.jar -d ./lambda-0.0.1-SNAPSHOT 
           mkdir lib
-          mvn target/lambda-0.0.1-SNAPSHOT/BOOT-INF/lib/*.jar ./lib
-          mvn target/lambda-0.0.1-SNAPSHOT/BOOT-INF/classes/com/LogEvent.class ./
+          mv target/lambda-0.0.1-SNAPSHOT/BOOT-INF/lib/*.jar ./lib
+          mv target/lambda-0.0.1-SNAPSHOT/BOOT-INF/classes/com/LogEvent.class ./
           zip -r csye6225-serverless-${{ github.sha }}.zip ./lib/*.jar ./LogEvent.class
           mv csye6225-serverless-${{ github.sha }}.zip ./
       - name: Configure AWS credentials
