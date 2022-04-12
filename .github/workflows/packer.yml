@@ -36,6 +36,7 @@ jobs:
           unzip lambda-0.0.1-SNAPSHOT.jar -d ./lambda-0.0.1-SNAPSHOT
           cd ~
           mkdir lib
+          ls -all
           mv ./lambda-0.0.1-SNAPSHOT/BOOT-INF/lib/*.jar ./lib
           mv ./lambda-0.0.1-SNAPSHOT/BOOT-INF/classes/com/LogEvent.class ./
           ls -all
