@@ -39,8 +39,8 @@ jobs:
           cd ..
           mkdir lib
           ls -all
-          mv ./lambda-0.0.1-SNAPSHOT/BOOT-INF/lib/*.jar ./lib
-          mv ./lambda-0.0.1-SNAPSHOT/BOOT-INF/classes/com/LogEvent.class ./
+          mv ./target/lambda-0.0.1-SNAPSHOT/BOOT-INF/lib/*.jar ./lib
+          mv ./target/lambda-0.0.1-SNAPSHOT/BOOT-INF/classes/com/LogEvent.class ./
           ls -all
           zip -r csye6225-serverless-${{ github.sha }}.zip ./lib/*.jar ./LogEvent.class
           mv csye6225-serverless-${{ github.sha }}.zip ./
