@@ -31,7 +31,8 @@ jobs:
         run: |
           mvn package
           cd ./target
-          unzip lambda-0.0.1-SNAPSHOT.jar -d ./target/lambda-0.0.1-SNAPSHOT 
+          mkdir lambda-0.0.1-SNAPSHOT
+          unzip lambda-0.0.1-SNAPSHOT.jar -d ./target/lambda-0.0.1-SNAPSHOT
           cd ~
           mkdir lib
           mv target/lambda-0.0.1-SNAPSHOT/BOOT-INF/lib/*.jar ./lib
