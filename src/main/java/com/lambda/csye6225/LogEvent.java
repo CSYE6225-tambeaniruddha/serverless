@@ -52,8 +52,8 @@ public class LogEvent implements RequestHandler<SNSEvent, Object>{
 		byte[] decodedBytes = Base64.decode(record.getBytes());
 	 	String decodedMessage = new String(decodedBytes);
 	 	
-	 	String token = decodedMessage.split(":", 2)[0];
-		String username = decodedMessage.split(":", 2)[1];
+	 	String token = decodedMessage.split(";", 2)[0];
+		String username = decodedMessage.split(";", 2)[1];
 		
 		// Set reciepient
 		TO = username;
