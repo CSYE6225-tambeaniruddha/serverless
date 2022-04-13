@@ -8,39 +8,28 @@
 		<version>2.6.6</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.serverless</groupId>
-	<artifactId>lambda</artifactId>
+	<groupId>com.lambda</groupId>
+	<artifactId>csye6225</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>lambda</name>
-	<description>ServerLess API</description>
+	<name>csye6225</name>
+	<description>Lambda project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
+<!-- 
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+		    <groupId>com.amazonaws</groupId>
+		    <artifactId>aws-lambda-java-core</artifactId>
+		    <version>1.2.1</version>
 		</dependency>
 		<dependency>
     		<groupId>org.springframework.security</groupId>
     		<artifactId>spring-security-core</artifactId>
     		<version>${spring-security.version}</version>
 	</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/com.amazonaws/aws-lambda-java-core -->
-		<dependency>
-		    <groupId>com.amazonaws</groupId>
-		    <artifactId>aws-lambda-java-core</artifactId>
-		    <version>1.2.1</version>
-		</dependency>
 				
-				<!-- https://mvnrepository.com/artifact/com.amazonaws/aws-lambda-java-events -->
+				
 		<dependency>
 		    <groupId>com.amazonaws</groupId>
 		    <artifactId>aws-lambda-java-events</artifactId>
@@ -57,17 +46,72 @@
 		    <groupId>com.amazonaws</groupId>
 		    <artifactId>aws-java-sdk</artifactId>
 		    <version>1.12.17</version>
-		</dependency>	
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency> -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-lambda-java-core</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-lambda-java-events</artifactId>
+			<version>2.2.7</version>
+		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-lambda-java-log4j2</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-dynamodb -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-dynamodb</artifactId>
+			<version>1.11.756</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-ses -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-ses</artifactId>
+			<version>1.11.756</version>
+		</dependency>
+		
+		<dependency>
+    		<groupId>org.springframework.security</groupId>
+    		<artifactId>spring-security-core</artifactId>
+    		<version>${spring-security.version}</version>
+	</dependency>
 		
 	</dependencies>
 
 	<build>
 		<plugins>
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<plugin>
+					<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3.1</version>
@@ -76,11 +120,54 @@
 					 <target>8</target>
 					<archive>
 					<manifest>
-					    <mainClass>com.serverless.lambda.LambdaApplication</mainClass>
+					    <mainClass>com.LogEvent</mainClass>
 				  	</manifest>
 					</archive>
 				</configuration>
-			</plugin>
+			</plugin> 
+			       <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-shade-plugin</artifactId>
+    <version>3.2.4</version>
+    <configuration>
+        <createDependencyReducedPom>false</createDependencyReducedPom>
+        <transformers>
+            <transformer
+                    implementation="com.github.edwgiz.mavenShadePlugin.log4j2CacheTransformer.PluginsCacheFileTransformer">
+            </transformer>
+        </transformers>
+    </configuration>
+    <executions>
+        <execution>
+            <phase>package</phase>
+            <goals>
+                <goal>shade</goal>
+            </goals>
+        </execution>
+    </executions>
+    <dependencies>
+        <dependency>
+            <groupId>com.github.edwgiz</groupId>
+            <artifactId>maven-shade-plugin.log4j2-cachefile-transformer</artifactId>
+            <version>2.8.1</version>
+        </dependency>
+    </dependencies>
+</plugin>-->
+			      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <configuration>
+          <createDependencyReducedPom>false</createDependencyReducedPom>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
 		</plugins>
 	</build>
 

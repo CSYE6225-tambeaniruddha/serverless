@@ -1,4 +1,4 @@
-package com;
+package com.lambda.csye6225;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -18,6 +18,7 @@ import com.amazonaws.services.simpleemail.model.Destination;
 import com.amazonaws.services.simpleemail.model.Message;
 import com.amazonaws.services.simpleemail.model.SendEmailRequest;
 
+@SuppressWarnings("deprecation")
 public class LogEvent implements RequestHandler<SNSEvent, Object>{
 
 	// ************* SES Email variables ************
@@ -56,10 +57,13 @@ public class LogEvent implements RequestHandler<SNSEvent, Object>{
 		
 		// Set reciepient
 		TO = username;
+		//TO = "tambe.aniruddha3110@gmail.com";
+		context.getLogger().log("Email set: " + TO);
 		
 		// ********** Send Email **********
 		
-		this.sendEmail();
+		this.sendEmail(context);
+		context.getLogger().log("Email sent");
 		
 		// ********************************
 		
@@ -70,13 +74,15 @@ public class LogEvent implements RequestHandler<SNSEvent, Object>{
 		return null;
 	}
 	
-	public void sendEmail() {
+	public void sendEmail(Context context) {
 		
 		try {
+			context.getLogger().log("Inside sendEmail function");
 		      AmazonSimpleEmailService client = AmazonSimpleEmailServiceClientBuilder.standard()
-		    		  		.withCredentials(new InstanceProfileCredentialsProvider(false))
+		    		  		//.withCredentials(new InstanceProfileCredentialsProvider(false))
 		    		  		.withRegion(Regions.US_EAST_1).build();
-		      
+		    
+		      context.getLogger().log("Got client: "+client);
 		      
 		      SendEmailRequest request = new SendEmailRequest()
 		          .withDestination(
@@ -94,9 +100,13 @@ public class LogEvent implements RequestHandler<SNSEvent, Object>{
 		          // configuration set
 		          .withConfigurationSetName(CONFIGSET);
 		      
+		      context.getLogger().log("Got request: "+request);
+		      
 		      client.sendEmail(request);
+		      context.getLogger().log("Email sent!");
 		      //System.out.println("Email sent!");
 		    } catch (Exception ex) {
+		    	context.getLogger().log("\"The email was not sent");
 		      System.out.println("The email was not sent. Error message: " 
 		          + ex.getMessage());
 		    }
@@ -104,3 +114,4 @@ public class LogEvent implements RequestHandler<SNSEvent, Object>{
 
 	
 }
+
