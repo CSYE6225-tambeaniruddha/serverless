@@ -29,20 +29,10 @@ jobs:
           java-version: "11"
       - name: Packaging code
         run: |
-          ls -all
           mvn package
-          ls -all
-          cd ./target
-          mkdir lambda-0.0.1-SNAPSHOT
-          ls -all
-          unzip lambda-0.0.1-SNAPSHOT.jar -d ./lambda-0.0.1-SNAPSHOT
-          cd ..
-          mkdir lib
-          ls -all
-          mv ./target/lambda-0.0.1-SNAPSHOT/BOOT-INF/lib/*.jar ./lib
-          mv ./target/lambda-0.0.1-SNAPSHOT/BOOT-INF/classes/com/LogEvent.class ./
-          ls -all
-          zip -r csye6225-serverless-${{ github.sha }}.zip ./lib/*.jar ./LogEvent.class
+          mkdir artifacts
+          zip -r csye6225-webapp-${{ github.sha }}.zip target/lambda-0.0.1-SNAPSHOT.jar 
+          mv csye6225-webapp-${{ github.sha }}.zip artifacts
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -72,5 +62,5 @@ jobs:
       - name: Create CodeDeploy Deployment
         id: deploy
         run: |
-          aws lambda update-function-code --function-name csye6225-spring2022 --zip-file fileb://csye6225-serverless-${{ github.sha }}.zip
+          aws lambda update-function-code --function-name csye6225-spring2022 --zip-file fileb://artifacts/csye6225-serverless-${{ github.sha }}.zip
 
