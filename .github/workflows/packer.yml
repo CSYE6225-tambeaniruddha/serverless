@@ -40,7 +40,7 @@ jobs:
           aws-region: us-east-1
       - name: Building AMI
         run: |
-          aws s3 sync ./artifacts s3://${{ secrets.S3_BUCKET_NAME }}
+          aws s3 sync ./artifacts s3://codedeploy.aniruddhatambe.me
           
       #- name: Packer build
       #  uses: ExitoLab/packer_build_action_aws@v0.2.10
