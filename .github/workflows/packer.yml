@@ -28,13 +28,19 @@ jobs:
         with:
           java-version: "11"
       - name: Packaging code
-        run: mvn package
+        run: |
+          mvn package
+          mkdir artifacts
+          mv target/csye6225-0.0.1-SNAPSHOT.jar artifacts
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
+      - name: Building AMI
+        run: |
+          aws s3 sync ./artifacts s3://${{ secrets.S3_BUCKET_NAME }}
           
       #- name: Packer build
       #  uses: ExitoLab/packer_build_action_aws@v0.2.10
