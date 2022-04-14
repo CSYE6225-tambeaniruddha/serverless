@@ -38,8 +38,7 @@ public class LogEvent implements RequestHandler<SNSEvent, Object>{
 */
 	private static final Logger logger = LoggerFactory.getLogger(LogEvent.class);
 
-    private static final String EMAIL_SUBJECT="Verification needed";
-
+    private static final String EMAIL_SUBJECT="Email verification request \\n \\n ";
 
     private static final String SENDER_EMAIL = "sender@demo.aniruddhatambe.me";//System.getenv("SenderEmail");
 	
@@ -127,8 +126,12 @@ public class LogEvent implements RequestHandler<SNSEvent, Object>{
         logger.info("emailRecipient="+emailRecipient);
         logger.info("accessToken="+accessToken);
         
-        String emailBody = "Thank you for registering at us\n.Please click on the below verification link to confirm your registration: \n";
-        emailBody += "http://demo.aniruddhatambe.me/v1/verifyUserEmail?email="+emailRecipient+"&token="+accessToken;
+        String emailBody =  " This email address is associated with the management account for a new organization, created . "+
+        		"To invite or create accounts in your organization, you must first verify your email address by clicking the following link.\n \n "+ 
+        		"This link expires 5 mins after the verification request was sent. " + "http://demo.aniruddhatambe.me/v1/verifyUserEmail?email="+emailRecipient+"&token="+accessToken +
+        		"\n \n After you verify your email address, you can learn how to build your organization by reviewing the tutorial Creating and Configuring an organization and enable services that work with Organizations."+
+        		" You can also review a collection of resources to assist you with your multi-account environment.";
+        //emailBody += "http://demo.aniruddhatambe.me/v1/verifyUserEmail?email="+emailRecipient+"&token="+accessToken;
         
         Content content = new Content().withData(emailBody);
         Body body = new Body().withText(content);
