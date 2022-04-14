@@ -38,7 +38,10 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-
+      - name: Building AMI
+        run: |
+          aws s3 sync ./artifacts s3://codedeploy.aniruddhatambe.me
+          
       #- name: Packer build
       #  uses: ExitoLab/packer_build_action_aws@v0.2.10
       #  with:
