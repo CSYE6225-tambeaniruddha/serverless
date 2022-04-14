@@ -31,7 +31,7 @@ jobs:
         run: |
           mvn package
           mkdir artifacts
-          mv target/csye6225-0.0.1-SNAPSHOT.jar artifacts
+          cp target/csye6225-0.0.1-SNAPSHOT.jar artifacts
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
