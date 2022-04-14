@@ -128,7 +128,7 @@ public class LogEvent implements RequestHandler<SNSEvent, Object>{
         logger.info("accessToken="+accessToken);
         
         String emailBody = "Thank you for registering at us\n.Please click on the below verification link to confirm your registration: \n";
-        emailBody += "http://demo.aniruddhatambe.me/v1/verifyUserEmail?email="+emailRecipient+"&token="+accessToken);
+        emailBody += "http://demo.aniruddhatambe.me/v1/verifyUserEmail?email="+emailRecipient+"&token="+accessToken;
         
         Content content = new Content().withData(emailBody);
         Body body = new Body().withText(content);
