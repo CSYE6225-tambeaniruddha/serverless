@@ -121,7 +121,7 @@ public class LogEvent implements RequestHandler<SNSEvent, Object>{
         
         String emailBody =  " This email address is associated with the management account for a new organization, created . "+
         		"To invite or create accounts in your organization, you must first verify your email address by clicking the following link.\n \n "+ 
-        		"This link expires 5 mins after the verification request was sent. \n\n"+"Access Token: "+token + "\nUsername: "+username+""+"http://demo.aniruddhatambe.me/v1/verifyUserEmail?email="+emailRecipient+"&token="+accessToken +
+        		"This link expires 5 mins after the verification request was sent. \n\n"+"Access Token: "+token + "\nUsername: "+username+""+"\nLink: http://demo.aniruddhatambe.me/v1/verifyUserEmail?email="+emailRecipient+"&token="+accessToken +
         		"\n \n After you verify your email address, you can learn how to build your organization by reviewing the tutorial Creating and Configuring an organization and enable services that work with Organizations."+
         		" You can also review a collection of resources to assist you with your multi-account environment.";
         //emailBody += "http://demo.aniruddhatambe.me/v1/verifyUserEmail?email="+emailRecipient+"&token="+accessToken;
