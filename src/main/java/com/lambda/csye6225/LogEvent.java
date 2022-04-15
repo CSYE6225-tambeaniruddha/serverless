@@ -9,6 +9,16 @@ import org.springframework.security.crypto.codec.Base64;
 
 import com.amazonaws.auth.InstanceProfileCredentialsProvider;
 import com.amazonaws.regions.Regions;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.amazonaws.services.dynamodbv2.document.Item;
+import com.amazonaws.services.dynamodbv2.document.Table;
+import com.amazonaws.services.dynamodbv2.document.UpdateItemOutcome;
+import com.amazonaws.services.dynamodbv2.document.spec.UpdateItemSpec;
+import com.amazonaws.services.dynamodbv2.document.utils.NameMap;
+import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
+import com.amazonaws.services.dynamodbv2.model.ReturnValue;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.SNSEvent;
@@ -63,15 +73,35 @@ public class LogEvent implements RequestHandler<SNSEvent, Object>{
 	 	String token = decodedMessage.split(";", 2)[0];
 		String username = decodedMessage.split(";", 2)[1];
 		
-		// Set reciepient
-		//TO = "tambe.aniruddha3110@gmail.com";
 		context.getLogger().log("Email set: " + username);
 		
-		// ********** Send Email **********
+		// ********* Check if mail is sent **************
+		
+		AmazonDynamoDB dynamodbClient = AmazonDynamoDBClientBuilder.defaultClient();
+		DynamoDB dynamoDB = new DynamoDB(dynamodbClient);
+		Table table = dynamoDB.getTable("Account");
+		Item item = table.getItem("username",username);
+		
+		if(item.get("messageSent").equals("YES")) {
+			context.getLogger().log("DUPLICATE EMAIL NOT SENT!!!!!!!!!");
+			return null;
+		}
+		
+		// *************** Send Email ******************
 		
 		this.sendEmail(context,record,username,token);
 		context.getLogger().log("Email sent");
 		
+		
+		// ************** Mark as sent *************
+			
+		// Update item
+		UpdateItemSpec updateItemSpec = new UpdateItemSpec().withPrimaryKey("Id", 121)
+                .withUpdateExpression("set #na = :val1").withNameMap(new NameMap().with("#na", "messageSent"))
+                .withValueMap(new ValueMap().withString(":val1", "YES")).withReturnValues(ReturnValue.ALL_NEW);
+
+		UpdateItemOutcome outcome = table.updateItem(updateItemSpec);
+
 		// ********************************
 		
 		timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
@@ -81,44 +111,7 @@ public class LogEvent implements RequestHandler<SNSEvent, Object>{
 		return null;
 	}
 	
-	public void sendEmail(Context context,String message,String username,String token) {
-		
-		/*
-		try {
-			context.getLogger().log("Inside sendEmail function");
-		      AmazonSimpleEmailService client = AmazonSimpleEmailServiceClientBuilder.standard()
-		    		  		//.withCredentials(new InstanceProfileCredentialsProvider(false))
-		    		  		.withRegion(Regions.US_EAST_1).build();
-		    
-		      context.getLogger().log("Got client: "+client);
-		      
-		      SendEmailRequest request = new SendEmailRequest()
-		          .withDestination(
-		              new Destination().withToAddresses(TO))
-		          .withMessage(new Message()
-		              .withBody(new Body()
-		                  .withHtml(new Content()
-		                      .withCharset("UTF-8").withData(HTMLBODY))
-		                  .withText(new Content()
-		                      .withCharset("UTF-8").withData(TEXTBODY)))
-		              .withSubject(new Content()
-		                  .withCharset("UTF-8").withData(SUBJECT)))
-		          .withSource(FROM)
-		          // Comment or remove the next line if you are not using a
-		          // configuration set
-		          .withConfigurationSetName(CONFIGSET);
-		      
-		      context.getLogger().log("Got request: "+request);
-		      
-		      client.sendEmail(request);
-		      context.getLogger().log("Email sent!");
-		      //System.out.println("Email sent!");
-		    } catch (Exception ex) {
-		    	context.getLogger().log("\"The email was not sent");
-		      System.out.println("The email was not sent. Error message: " 
-		          + ex.getMessage());
-		    }
-		*/       
+	public void sendEmail(Context context,String message,String username,String token) {     
         
         String emailRecipient = username;//(String) jsonObject.get("EmailAddress").getAsString();
         String accessToken = token;//(String) jsonObject.get("AccessToken").getAsString();
@@ -128,7 +121,7 @@ public class LogEvent implements RequestHandler<SNSEvent, Object>{
         
         String emailBody =  " This email address is associated with the management account for a new organization, created . "+
         		"To invite or create accounts in your organization, you must first verify your email address by clicking the following link.\n \n "+ 
-        		"This link expires 5 mins after the verification request was sent. " + "http://demo.aniruddhatambe.me/v1/verifyUserEmail?email="+emailRecipient+"&token="+accessToken +
+        		"This link expires 5 mins after the verification request was sent. \n\n"+"Access Token: "+token + "\nUsername: "+username+"http://demo.aniruddhatambe.me/v1/verifyUserEmail?email="+emailRecipient+"&token="+accessToken +
         		"\n \n After you verify your email address, you can learn how to build your organization by reviewing the tutorial Creating and Configuring an organization and enable services that work with Organizations."+
         		" You can also review a collection of resources to assist you with your multi-account environment.";
         //emailBody += "http://demo.aniruddhatambe.me/v1/verifyUserEmail?email="+emailRecipient+"&token="+accessToken;
