@@ -80,7 +80,7 @@ public class LogEvent implements RequestHandler<SNSEvent, Object>{
 		AmazonDynamoDB dynamodbClient = AmazonDynamoDBClientBuilder.defaultClient();
 		DynamoDB dynamoDB = new DynamoDB(dynamodbClient);
 		Table table = dynamoDB.getTable("Account");
-		Item item = table.getItem("username",username);
+		Item item = table.getItem("username",username,"token",token);
 		
 		if(item.get("messageSent").equals("YES")) {
 			context.getLogger().log("DUPLICATE EMAIL NOT SENT!!!!!!!!!");
