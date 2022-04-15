@@ -48,7 +48,7 @@ public class LogEvent implements RequestHandler<SNSEvent, Object>{
 */
 	private static final Logger logger = LoggerFactory.getLogger(LogEvent.class);
 
-    private static final String EMAIL_SUBJECT="Email verification request \\n \\n ";
+    private static final String EMAIL_SUBJECT="Email verification request - CSYE6255-spring2022 ";
 
     private static final String SENDER_EMAIL = "sender@demo.aniruddhatambe.me";//System.getenv("SenderEmail");
 	
