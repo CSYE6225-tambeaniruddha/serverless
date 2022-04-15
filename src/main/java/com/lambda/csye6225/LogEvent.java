@@ -82,10 +82,13 @@ public class LogEvent implements RequestHandler<SNSEvent, Object>{
 		Table table = dynamoDB.getTable("Account");
 		Item item = table.getItem("username",username,"token",token);
 		
-		if(item.get("messageSent").equals("YES")) {
-			context.getLogger().log("DUPLICATE EMAIL NOT SENT!!!!!!!!!");
-			return null;
+		if(item.get("messageSent") != null) {
+			if(item.get("messageSent").equals("YES")) {
+				context.getLogger().log("DUPLICATE EMAIL NOT SENT!!!!!!!!!");
+				return null;
+			}
 		}
+		
 		
 		// *************** Send Email ******************
 		
