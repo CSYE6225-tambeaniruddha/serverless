@@ -99,7 +99,7 @@ public class LogEvent implements RequestHandler<SNSEvent, Object>{
 		// ************** Mark as sent *************
 			
 		// Update item
-		UpdateItemSpec updateItemSpec = new UpdateItemSpec().withPrimaryKey("Id", 121)
+		UpdateItemSpec updateItemSpec = new UpdateItemSpec().withPrimaryKey("username", username,"token",token)
                 .withUpdateExpression("set #na = :val1").withNameMap(new NameMap().with("#na", "messageSent"))
                 .withValueMap(new ValueMap().withString(":val1", "YES")).withReturnValues(ReturnValue.ALL_NEW);
 
@@ -122,7 +122,7 @@ public class LogEvent implements RequestHandler<SNSEvent, Object>{
         logger.info("emailRecipient="+emailRecipient);
         logger.info("accessToken="+accessToken);
         
-        String emailBody =  " This email address is associated with the management account for a new organization, created . "+
+        String emailBody =  " This email address is associated with the management   for a new organization, created . "+
         		"To invite or create accounts in your organization, you must first verify your email address by clicking the following link.\n \n "+ 
         		"This link expires 5 mins after the verification request was sent. \n\n"+"Access Token: "+token + "\nUsername: "+username+""+"\nLink: http://demo.aniruddhatambe.me/v1/verifyUserEmail?email="+emailRecipient+"&token="+accessToken +
         		"\n \n After you verify your email address, you can learn how to build your organization by reviewing the tutorial Creating and Configuring an organization and enable services that work with Organizations."+
