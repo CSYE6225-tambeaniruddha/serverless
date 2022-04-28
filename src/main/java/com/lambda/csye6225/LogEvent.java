@@ -127,7 +127,7 @@ public class LogEvent implements RequestHandler<SNSEvent, Object>{
         		"This link expires 5 mins after the verification request was sent. \n\n"+"Access Token: "+token + "\nUsername: "+username+""+"\nLink: http://demo.aniruddhatambe.me/v1/verifyUserEmail?email="+emailRecipient+"&token="+accessToken +
         		"\n \n After you verify your email address, you can learn how to build your organization by reviewing the tutorial Creating and Configuring an organization and enable services that work with Organizations."+
         		" You can also review a collection of resources to assist you with your multi-account environment.";
-        //emailBody += "http://demo.aniruddhatambe.me/v1/verifyUserEmail?email="+emailRecipient+"&token="+accessToken;
+        //emailBody += "https://demo.aniruddhatambe.me/v1/verifyUserEmail?email="+emailRecipient+"&token="+accessToken;
         
         Content content = new Content().withData(emailBody);
         Body body = new Body().withText(content);
